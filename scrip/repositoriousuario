@@ -1,71 +1,26 @@
-// Services/UsuarioService.cs
-public class UsuarioService
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dapper;
+
+public class UsuarioRepository
 {
-    private readonly UsuarioRepository usuarioRepo;
+    private readonly Database db;
+    public UsuarioRepository(Database database) => this.db = database;
 
-    public UsuarioService(UsuarioRepository repo)
+    public async Task<Usuario> GetUsuarioAsync(string usuarioNome)
     {
-        this.usuarioRepo = repo;
+        var sql = "SELECT * FROM Usuarios WHERE UsuarioNome = @UsuarioNome";
+        using var conn = db.GetConnection();
+        return await conn.QueryFirstOrDefaultAsync<Usuario>(sql, new { UsuarioNome = usuarioNome });
     }
 
-    public async Task<bool> ValidarLoginAsync(string usuario, string senha)
+    public async Task AddUsuarioAsync(Usuario usuario)
     {
-        var user = await usuarioRepo.GetUsuarioAsync(usuario);
-        return user != null && user.Senha == senha;
-    }
-
-    public async Task CadastrarUsuarioAsync(Usuario usuario)
-    {
-        await usuarioRepo.AddUsuarioAsync(usuario);
+        var sql = "INSERT INTO Usuarios (UsuarioNome, Senha) VALUES (@UsuarioNome, @Senha)";
+        using var conn = db.GetConnection();
+        await conn.ExecuteAsync(sql, usuario);
     }
 }
-
-// Services/MarmoreService.cs
-public class MarmoreService
-{
-    private readonly EstoqueRepository estoqueRepo;
-
-    public MarmoreService(EstoqueRepository repo)
-    {
-        this.estoqueRepo = repo;
-    }
-
-    public async Task ListarBlocosAsync()
-    {
-        var blocos = await estoqueRepo.ListarBlocosAsync();
-        foreach (var bloco in blocos)
-        {
-            Console.WriteLine($"Código: {bloco.Codigo}, Origem: {bloco.PedreiraOrigem}, Medida: {bloco.MedidaM3} m³, Material: {bloco.TipoMaterial}");
-        }
-    }
-
-    public async Task ListarChapasAsync()
-    {
-        var chapas = await estoqueRepo.ListarChapasAsync();
-        foreach (var chapa in chapas)
-        {
-            Console.WriteLine($"ID: {chapa.Id}, Bloco ID: {chapa.BlocoId}, Material: {chapa.TipoMaterial}, Medidas: {chapa.MedidaLargura}x{chapa.MedidaAltura}");
-        }
-    }
-
-    public async Task ProcessarSerragemAsync(int blocoId, double medidaLargura, double medidaAltura, decimal valor)
-    {
-        var chapa = new Chapa
-        {
-            BlocoId = blocoId,
-            TipoMaterial = "Material do Bloco", // Pode ser melhorado
-            MedidaLargura = medidaLargura,
-            MedidaAltura = medidaAltura,
-            Valor = valor
-        };
-        await estoqueRepo.CadastrarChapaAsync(chapa);
-        Console.WriteLine("Chapa gerada a partir do bloco.");
-    }
-
-    public async Task CadastrarBlocoAsync(Bloco bloco)
-    {
-        await estoqueRepo.CadastrarBlocoAsync(bloco);
-    }
 
     public async Task CadastrarChapaAsync(Chapa chapa)
     {
