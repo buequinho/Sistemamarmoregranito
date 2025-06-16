@@ -1,0 +1,30 @@
+// Models/Usuario.cs
+public class Usuario
+{
+    public int Id { get; set; }
+    public string UsuarioNome { get; set; }
+    public string Senha { get; set; }
+}
+
+// Models/Bloco.cs
+public class Bloco
+{
+    public int Id { get; set; }
+    public string Codigo { get; set; }
+    public string PedreiraOrigem { get; set; }
+    public double MedidaM3 { get; set; }
+    public string TipoMaterial { get; set; }
+    public decimal ValorCompra { get; set; }
+    public string NotaFiscal { get; set; }
+}
+
+// Models/Chapa.cs
+public class Chapa
+{
+    public int Id { get; set; }
+    public int BlocoId { get; set; }
+    public string TipoMaterial { get; set; }
+    public double MedidaLargura { get; set; }
+    public double MedidaAltura { get; set; }
+    public decimal Valor { get; set; }
+}
