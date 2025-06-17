@@ -1,11 +1,11 @@
 # Sistemamarmoregranito
 #Colaboradores
-  - Fábio Henrique dos Santos Buecker
-  - André muruci
-  - João Pedro Maroquio
-  - Carlos Petersen
-  - Pedro sana
-  - Davi Silva
+  - André Rezende Muruci de Mendonça 
+  - Carlos Manoel Petersen de Almeida 
+  - Davi Silva Melo 
+  - Fábio Henrique dos Santos Buecker 
+  - João Pedro Maroquio Paulino 
+  - Pedro Sana Rodrigues 
   
 1. Introdução
 Este documento descreve o desenvolvimento de um sistema voltado para empresas do ramo de mármore e granito, com o objetivo de facilitar o controle de blocos, chapas e processos de serragem.
